@@ -1,0 +1,1 @@
+<?php require_once __DIR__.'/../../includes/bootstrap.php'; require_login(); $r=(new app\Services\BookTypeService())->delete((int)($_GET['id']??0)); flash($r['ok']?'success':'error',$r['ok']?'Đã xóa loại sách':$r['message']); redirect_to('book_types/index.php'); ?>

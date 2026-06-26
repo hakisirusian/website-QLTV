@@ -1,0 +1,3 @@
+<?php
+namespace app\Repositories; use PDO; use PDOException;
+class Database{ private static ?PDO $pdo=null; public static function connection():PDO{ if(self::$pdo===null){ $c=require ROOT_PATH.'/config/database.php'; $dsn="mysql:host={$c['host']};dbname={$c['database']};charset={$c['charset']}"; try{ self::$pdo=new PDO($dsn,$c['username'],$c['password'],[PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION,PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,PDO::ATTR_EMULATE_PREPARES=>false]); self::$pdo->exec('SET NAMES utf8mb4'); }catch(PDOException $e){ die('Không kết nối được database: '.$e->getMessage()); }} return self::$pdo; }}

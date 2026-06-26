@@ -1,0 +1,1 @@
+<?php require_once __DIR__.'/../../includes/bootstrap.php'; require_login(); $r=(new app\Services\SimpleService('newspapers'))->delete((int)($_GET['id']??0)); flash($r['ok']?'success':'error',$r['ok']?'Đã xóa dữ liệu':$r['message']); redirect_to('newspapers/index.php'); ?>

@@ -1,0 +1,1 @@
+<?php require_once __DIR__.'/../../includes/bootstrap.php'; require_login(); $r=(new app\Services\BorrowService())->delete((int)($_GET['id']??0)); flash($r['ok']?'success':'error',$r['ok']?'Đã xóa phiếu mượn và hoàn lại số lượng tài liệu':$r['message']); redirect_to('borrows/index.php'); ?>

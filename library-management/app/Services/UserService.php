@@ -1,0 +1,3 @@
+<?php
+namespace app\Services; use app\Repositories\UserRepository;
+class UserService{ private UserRepository $repo; public function __construct(){ $this->repo=new UserRepository(); } public function delete(int $id,int $currentId):array{ $u=$this->repo->findById($id); if(!$u)return ['ok'=>false,'message'=>'Người dùng không tồn tại']; if($id===$currentId)return ['ok'=>false,'message'=>'Không thể xóa chính tài khoản đang đăng nhập']; if($u['role_name']==='admin' && $this->repo->countAdmins()<=1)return ['ok'=>false,'message'=>'Không thể xóa quản trị viên cuối cùng']; $this->repo->delete($id); return ['ok'=>true]; }}

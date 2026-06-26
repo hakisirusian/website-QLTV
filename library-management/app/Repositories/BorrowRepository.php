@@ -1,0 +1,11 @@
+<?php
+namespace app\Repositories;
+class BorrowRepository extends BaseRepository{
+ private string $select="SELECT br.*,m.full_name member_name,m.member_code,m.student_code,CASE br.item_type WHEN 'book' THEN b.title WHEN 'newspaper' THEN n.name WHEN 'magazine' THEN g.name END item_title,CASE br.item_type WHEN 'book' THEN b.isbn WHEN 'newspaper' THEN n.name WHEN 'magazine' THEN g.name END item_code FROM borrows br JOIN members m ON m.id=br.member_id LEFT JOIN books b ON br.item_type='book' AND b.id=br.item_id LEFT JOIN newspapers n ON br.item_type='newspaper' AND n.id=br.item_id LEFT JOIN magazines g ON br.item_type='magazine' AND g.id=br.item_id";
+ public function all(string $q='',string $status='borrowing'):array{ $where=[];$params=[]; if($q){$where[]="(m.full_name LIKE ? OR m.member_code LIKE ? OR m.student_code LIKE ? OR b.title LIKE ? OR b.isbn LIKE ? OR n.name LIKE ? OR g.name LIKE ?)";$params=["%$q%","%$q%","%$q%","%$q%","%$q%","%$q%","%$q%"]; } if($status==='overdue')$where[]="br.status='borrowing' AND br.due_date<CURDATE()"; elseif($status==='all'){} elseif($status){$where[]="br.status=?";$params[]=$status;} $ws=$where?' WHERE '.implode(' AND ',$where):''; return $this->fetchAll($this->select.$ws." ORDER BY br.id DESC",$params); }
+ public function find(int $id):?array{ return $this->fetch($this->select." WHERE br.id=?",[$id]); }
+ public function create(array $d):int{ $this->execute("INSERT INTO borrows(member_id,item_type,item_id,borrow_date,due_date,status,created_by) VALUES(?,?,?,?,?,?,?)",[$d['member_id'],$d['item_type'],$d['item_id'],$d['borrow_date'],$d['due_date'],$d['status']??'borrowing',$d['created_by']??null]); return $this->lastInsertId(); }
+ public function updateStatus(int $id,string $status):bool{ return $this->execute("UPDATE borrows SET status=? WHERE id=?",[$status,$id]); }
+ public function update(int $id,array $d):bool{ return $this->execute("UPDATE borrows SET member_id=?,item_type=?,item_id=?,borrow_date=?,due_date=?,status=? WHERE id=?",[$d['member_id'],$d['item_type'],$d['item_id'],$d['borrow_date'],$d['due_date'],$d['status']??'borrowing',$id]); }
+ public function delete(int $id):bool{ return $this->execute("DELETE FROM borrows WHERE id=?",[$id]); }
+}

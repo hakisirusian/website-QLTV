@@ -1,0 +1,1 @@
+<?php require_once __DIR__ . '/../includes/bootstrap.php'; $title='403'; include __DIR__.'/../includes/header.php'; ?><div class='text-center py-5'><h1>403</h1><p>Bạn không có quyền truy cập trang này.</p><a class='btn btn-primary' href='<?= url('dashboard.php') ?>'>Về Dashboard</a></div><?php include __DIR__.'/../includes/footer.php'; ?>

@@ -1,0 +1,1 @@
+<?php require_once __DIR__.'/../../includes/bootstrap.php'; require_admin(); $r=(new app\Services\UserService())->delete((int)($_GET['id']??0),(int)current_user()['id']); flash($r['ok']?'success':'error',$r['ok']?'Đã xóa người dùng':$r['message']); redirect_to('users/index.php'); ?>

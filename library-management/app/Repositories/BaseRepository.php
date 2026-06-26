@@ -1,0 +1,3 @@
+<?php
+namespace app\Repositories; use PDO;
+class BaseRepository{ protected PDO $db; public function __construct(){ $this->db=Database::connection(); } protected function fetchAll(string $sql,array $params=[]):array{ $s=$this->db->prepare($sql); $s->execute($params); return $s->fetchAll(); } protected function fetch(string $sql,array $params=[]):?array{ $s=$this->db->prepare($sql); $s->execute($params); $r=$s->fetch(); return $r?:null; } protected function execute(string $sql,array $params=[]):bool{ $s=$this->db->prepare($sql); return $s->execute($params); } protected function lastInsertId():int{ return (int)$this->db->lastInsertId(); }}

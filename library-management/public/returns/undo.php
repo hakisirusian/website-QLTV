@@ -1,0 +1,1 @@
+<?php require_once __DIR__.'/../../includes/bootstrap.php'; require_login(); $r=(new app\Services\ReturnService())->undo((int)($_GET['id']??0)); flash($r['ok']?'success':'error',$r['ok']?'Đã hoàn tác phiếu trả, phiếu mượn đã quay lại mục mượn tài liệu':$r['message']); redirect_to('returns/index.php'); ?>
